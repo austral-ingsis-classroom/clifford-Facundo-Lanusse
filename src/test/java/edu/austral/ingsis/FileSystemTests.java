@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 public class FileSystemTests {
 
-  private final FileSystemRunner runner = commands -> List.of();
+  private final FileSystemRunner runner = new SimpleFileSystemRunner();
 
   private void executeTest(List<Map.Entry<String, String>> commandsAndResults) {
     final List<String> commands = commandsAndResults.stream().map(Map.Entry::getKey).toList();
@@ -58,7 +58,7 @@ public class FileSystemTests {
             entry("cd emily", "moved to directory 'emily'"),
             entry("touch elizabeth.txt", "'elizabeth.txt' file created"),
             entry("mkdir t-bone", "'t-bone' directory created"),
-            entry("ls", "t-bone elizabeth.txt"),
+            entry("ls", "elizabeth.txt t-bone"),
             entry("rm t-bone", "cannot remove 't-bone', is a directory"),
             entry("rm --recursive t-bone", "'t-bone' removed"),
             entry("ls", "elizabeth.txt"),
@@ -85,6 +85,8 @@ public class FileSystemTests {
     executeTest(
         List.of(
             entry("mkdir emily", "'emily' directory created"),
+            entry("touch elizabeth.txt", "'elizabeth.txt' file created"),
+            entry("cd elizabeth.txt", "'elizabeth.txt' is not a directory"),
             entry("cd horace", "'horace' directory does not exist")));
   }
 
@@ -119,5 +121,13 @@ public class FileSystemTests {
             entry("rm --recursive emily", "'emily' removed"),
             entry("ls", "emily.txt jetta.txt"),
             entry("ls --ord=desc", "jetta.txt emily.txt")));
+  }
+
+  @Test
+  void test9() {
+    executeTest(
+        List.of(
+            entry("mkdir emily", "'emily' directory created"),
+            entry("rm hola.txt", "file does not exist")));
   }
 }

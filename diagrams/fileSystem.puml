@@ -1,0 +1,101 @@
+@startuml
+' Sistema de archivos virtual - CLI con Command y Composite
+
+package "Core" {
+    interface FileSystem {
+        +run(commandLine: String): String
+        +getCurrentPath(): String
+    }
+
+    class InMemoryFileSystem {
+        -root: Directory
+        -current: Directory
+        +run(commandLine: String): String
+        +getCurrentPath(): String
+        +getCurrentDirectory(): Directory
+        +setCurrentDirectory(newDir: Directory): void
+        +getRoot(): Directory
+        +resolvePath(path: String): Directory
+    }
+
+    FileSystem <|.. InMemoryFileSystem
+}
+
+package "Filesystem Elements" {
+    abstract class FileSystemElement {
+        +name: String
+        +parent: Directory
+        +getName(): String
+        +getParent(): Directory
+        +getPath(): String
+        +isDirectory(): Boolean
+    }
+
+    class File {
+        +isDirectory(): Boolean = false
+    }
+
+    class Directory {
+        -children: List<FileSystemElement>
+        +add(child: FileSystemElement): void
+        +remove(child: FileSystemElement): void
+        +getChild(name: String): FileSystemElement
+        +list(order: String = null): List<FileSystemElement>
+        +isDirectory(): Boolean = true
+        +getPath(): String
+    }
+
+    FileSystemElement <|-- File
+    FileSystemElement <|-- Directory
+}
+
+package "Commands" {
+    interface Command {
+        +execute(fs: InMemoryFileSystem): String
+    }
+
+    class Ls {
+            -order: String
+            +execute(fs: InMemoryFileSystem): String
+        }
+
+    class Cd {
+        -path: String
+        +execute(fs: InMemoryFileSystem): String
+    }
+
+    class Touch {
+        -filename: String
+        +execute(fs: InMemoryFileSystem): String
+    }
+
+    class Mkdir {
+        -dirname: String
+        +execute(fs: InMemoryFileSystem): String
+    }
+
+    class Rm {
+        -target: String
+        -recursive: Boolean
+        +execute(fs: InMemoryFileSystem): String
+    }
+
+    class Pwd {
+        +execute(fs: InMemoryFileSystem): String
+    }
+}
+
+    Command <|.. Ls
+    Command <|.. Cd
+    Command <|.. Touch
+    Command <|.. Mkdir
+    Command <|.. Rm
+    Command <|.. Pwd
+
+package "Parser" {
+    class CommandParser {
+        +parse(input: String): Command
+    }
+    InMemoryFileSystem --> CommandParser : uses
+}
+@enduml
