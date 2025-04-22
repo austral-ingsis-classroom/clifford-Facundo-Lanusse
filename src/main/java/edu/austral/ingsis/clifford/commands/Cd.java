@@ -9,9 +9,6 @@ public final class Cd implements Command {
   private final String path;
 
   public Cd(String path) {
-    if (path == null || path.isEmpty()) {
-      throw new IllegalArgumentException("Path cannot be null or empty");
-    }
     this.path = path;
   }
 
