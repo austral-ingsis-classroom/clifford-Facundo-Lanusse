@@ -16,7 +16,8 @@ public class InMemoryFileSystem implements FileSystem {
     this.root = new Directory("/", null);
     this.current = root;
   }
-//usar result
+
+  // usar result
   @Override
   public String run(String commandLine) {
     try {
@@ -44,7 +45,7 @@ public class InMemoryFileSystem implements FileSystem {
     return root;
   }
 
-  //podria hacer una clase que se ocupe de esto
+  // podria hacer una clase que se ocupe de esto
 
   // Resuelve rutas tipo: ".", "..", "/", "~/facu-lanusse"
   public Result<Directory> resolvePath(String path) {

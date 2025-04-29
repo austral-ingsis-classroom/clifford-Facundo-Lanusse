@@ -1,6 +1,6 @@
 package edu.austral.ingsis.clifford.elements;
 
-//chequear siempre las calses abstractas
+// chequear siempre las calses abstractas
 public abstract sealed class FileSystemElements permits Directory, File {
 
   private final String name;
