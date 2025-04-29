@@ -1,5 +1,6 @@
 package edu.austral.ingsis.clifford.commands;
 
+import edu.austral.ingsis.clifford.Resolver.PathResolver;
 import edu.austral.ingsis.clifford.elements.Directory;
 import edu.austral.ingsis.clifford.result.Result;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
@@ -14,9 +15,13 @@ public final class Cd implements Command {
 
   @Override
   public String execute(InMemoryFileSystem fileSystem) {
-    Result<Directory> result = fileSystem.resolvePath(path);
+    Directory root = fileSystem.getRoot();
+    Directory currentDir = fileSystem.getCurrentDirectory();
 
-    return result.fold(
+    PathResolver pathResolver = new PathResolver(path, root, currentDir);
+    Result<Directory> resolvedPath = pathResolver.resolvePath(path);
+
+    return resolvedPath.fold(
         dir -> {
           fileSystem.setCurrentDirectory(dir);
           return "moved to directory '" + dir.getName() + "'";

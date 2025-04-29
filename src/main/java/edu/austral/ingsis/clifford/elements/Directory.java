@@ -1,7 +1,6 @@
 package edu.austral.ingsis.clifford.elements;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public final class Directory extends FileSystemElements {
@@ -36,17 +35,7 @@ public final class Directory extends FileSystemElements {
     return null;
   }
 
-  // poner la logica de ordenamiento en el ls
-  public List<FileSystemElements> list(String order) {
-    List<FileSystemElements> sorted = new ArrayList<>(children);
-    if (order == null) {
-      return sorted;
-    }
-    switch (order) {
-      case "asc" -> sorted.sort(Comparator.comparing(FileSystemElements::getName));
-      case "desc" -> sorted.sort(Comparator.comparing(FileSystemElements::getName).reversed());
-        // como uso sealed puedo no usar default
-    }
-    return sorted;
+  public List<FileSystemElements> getChildren() {
+    return children;
   }
 }
