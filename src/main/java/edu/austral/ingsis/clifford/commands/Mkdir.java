@@ -1,12 +1,10 @@
 package edu.austral.ingsis.clifford.commands;
 
 import edu.austral.ingsis.clifford.elements.Directory;
-import edu.austral.ingsis.clifford.elements.FileSystemElements;
 import edu.austral.ingsis.clifford.result.CommandResult;
 import edu.austral.ingsis.clifford.result.Result;
 import edu.austral.ingsis.clifford.result.Success;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
-
 import java.util.List;
 
 public final class Mkdir implements Command {
@@ -29,7 +27,6 @@ public final class Mkdir implements Command {
     InMemoryFileSystem updatedFs = fileSystem.replaceDirectoryAtCurrentPath(updatedCurrentDir);
 
     return new Success<>(
-            new CommandResult("'" + newDir.getName() + "' directory created", updatedFs)
-    );
+        new CommandResult("'" + newDir.getName() + "' directory created", updatedFs));
   }
 }

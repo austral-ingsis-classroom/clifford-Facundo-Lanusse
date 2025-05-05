@@ -2,12 +2,8 @@ package edu.austral.ingsis.clifford.system;
 
 import edu.austral.ingsis.clifford.commandFactory.CommandFactory;
 import edu.austral.ingsis.clifford.commands.Command;
-import edu.austral.ingsis.clifford.commands.Ls;
-import edu.austral.ingsis.clifford.commands.Rm;
 import edu.austral.ingsis.clifford.result.Failure;
 import edu.austral.ingsis.clifford.result.Result;
-import edu.austral.ingsis.clifford.result.Success;
-
 import java.util.Arrays;
 import java.util.Map;
 
@@ -30,7 +26,7 @@ public class CommandParser {
     // toma el resto de las palabras a partir de la segunda
     String[] args = Arrays.copyOfRange(tokens, 1, tokens.length);
 
-    //recivo los comandos de mi mapa de comandos
+    // recivo los comandos de mi mapa de comandos
     CommandFactory factory = commandMap.get(command);
     if (factory == null) {
       return new Failure<>("Unknown command: " + command);

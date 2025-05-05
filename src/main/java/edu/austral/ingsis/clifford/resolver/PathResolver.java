@@ -6,7 +6,6 @@ import edu.austral.ingsis.clifford.result.Failure;
 import edu.austral.ingsis.clifford.result.ResolvedPath;
 import edu.austral.ingsis.clifford.result.Result;
 import edu.austral.ingsis.clifford.result.Success;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class PathResolver {
 
     for (String part : parts) {
       switch (part) {
-        case "", "." -> {}  // Ignorar vacíos o puntos actuales
+        case "", "." -> {} // Ignorar vacíos o puntos actuales
         case ".." -> {
           if (!pathList.isEmpty()) pathList.remove(pathList.size() - 1);
         }

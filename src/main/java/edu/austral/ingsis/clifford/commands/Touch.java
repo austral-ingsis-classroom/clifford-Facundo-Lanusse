@@ -26,7 +26,6 @@ public final class Touch implements Command {
     Directory updatedDir = currentDir.addChildByName(newFile);
     InMemoryFileSystem updatedFs = fileSystem.replaceDirectoryAtCurrentPath(updatedDir);
 
-    return new Success<>(
-            new CommandResult("'" + newFile.getName() + "' file created", updatedFs)
-    );  }
+    return new Success<>(new CommandResult("'" + newFile.getName() + "' file created", updatedFs));
+  }
 }

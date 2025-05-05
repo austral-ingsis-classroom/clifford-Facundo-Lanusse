@@ -2,7 +2,6 @@ package edu.austral.ingsis.clifford.system;
 
 import edu.austral.ingsis.clifford.result.CommandResult;
 import edu.austral.ingsis.clifford.result.Result;
-
 import java.util.List;
 
 public interface FileSystem {

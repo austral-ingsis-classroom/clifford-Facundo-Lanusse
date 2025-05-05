@@ -3,12 +3,11 @@ package edu.austral.ingsis.clifford.elements;
 import edu.austral.ingsis.clifford.result.Failure;
 import edu.austral.ingsis.clifford.result.Result;
 import edu.austral.ingsis.clifford.result.Success;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//todo inmutable
+// todo inmutable
 public final class Directory extends FileSystemElements {
 
   // manejo de dirctorio como nodos intermedios guardando una lista con sus hijos
@@ -39,24 +38,24 @@ public final class Directory extends FileSystemElements {
   public Result<FileSystemElements> getChild(String name) {
 
     return children.stream()
-            .filter( child -> child.getName().equals(name))
-            .findFirst()
-            .<Result<FileSystemElements>>map(Success::new)
-            .orElse(new Failure<>("'" + name + "' directory does not exist"));
+        .filter(child -> child.getName().equals(name))
+        .findFirst()
+        .<Result<FileSystemElements>>map(Success::new)
+        .orElse(new Failure<>("'" + name + "' directory does not exist"));
   }
 
   public List<FileSystemElements> getChildren() {
     return children;
   }
 
-  public Result<Directory> replaceChild(FileSystemElements newChild){
+  public Result<Directory> replaceChild(FileSystemElements newChild) {
     List<FileSystemElements> newUpdatedChildren = new ArrayList<>(children);
 
-    for(int i = 0; i < newUpdatedChildren.size(); i++){
+    for (int i = 0; i < newUpdatedChildren.size(); i++) {
       String fileName = newUpdatedChildren.get(i).getName();
       String newFileName = newChild.getName();
 
-      if (fileName.equals(newFileName)){
+      if (fileName.equals(newFileName)) {
         newUpdatedChildren.set(i, newChild);
         return new Success<>(new Directory(getName(), newUpdatedChildren));
       }

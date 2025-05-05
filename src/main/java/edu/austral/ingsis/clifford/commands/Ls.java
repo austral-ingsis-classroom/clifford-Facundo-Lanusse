@@ -27,7 +27,9 @@ public final class Ls implements Command {
 
     List<FileSystemElements> orderList = orderList(order, children);
 
-    return new Success<>(new CommandResult(orderList.stream().map(FileSystemElements::getName).collect(Collectors.joining(" ")),
+    return new Success<>(
+        new CommandResult(
+            orderList.stream().map(FileSystemElements::getName).collect(Collectors.joining(" ")),
             fileSystem));
   }
 

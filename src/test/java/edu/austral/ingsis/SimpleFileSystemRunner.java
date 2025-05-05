@@ -13,7 +13,6 @@ import edu.austral.ingsis.clifford.result.Success;
 import edu.austral.ingsis.clifford.system.CommandParser;
 import edu.austral.ingsis.clifford.system.FileSystem;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,14 +21,14 @@ public class SimpleFileSystemRunner implements FileSystemRunner {
   @Override
   public List<String> executeCommands(List<String> commands) {
 
-    Map<String, CommandFactory> factoryMap = Map.of(
+    Map<String, CommandFactory> factoryMap =
+        Map.of(
             "cd", new CdFactory(),
             "mkdir", new MkdirFactory(),
             "pwd", new PwdFactory(),
             "rm", new RmFactory(),
             "touch", new TouchFactory(),
-            "ls", new LsFactory()
-    );
+            "ls", new LsFactory());
 
     CommandParser parser = new CommandParser(factoryMap);
     FileSystem fs = new InMemoryFileSystem(parser); // tu sistema
@@ -41,7 +40,7 @@ public class SimpleFileSystemRunner implements FileSystemRunner {
       if (result instanceof Success<?> success) {
         CommandResult commandResult = (CommandResult) success.getValue();
         results.add(commandResult.output());
-        fs = commandResult.fileSystem();  // actualizar el file system con el nuevo estado
+        fs = commandResult.fileSystem(); // actualizar el file system con el nuevo estado
       } else if (result instanceof Failure failure) {
         results.add(failure.getError());
       } else {

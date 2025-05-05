@@ -6,13 +6,12 @@ import edu.austral.ingsis.clifford.result.Failure;
 import edu.austral.ingsis.clifford.result.Result;
 import edu.austral.ingsis.clifford.result.Success;
 
-public class CdFactory implements CommandFactory{
-    @Override
-    public Result<Command> parse(String[] arguments) {
-        if (arguments.length != 1) {
-            return new Failure<>("cd command requires exactly one argument");
-        }
-        return new Success<>(new Cd(arguments[0]));
+public class CdFactory implements CommandFactory {
+  @Override
+  public Result<Command> parse(String[] arguments) {
+    if (arguments.length != 1) {
+      return new Failure<>("cd command requires exactly one argument");
     }
+    return new Success<>(new Cd(arguments[0]));
+  }
 }
-
