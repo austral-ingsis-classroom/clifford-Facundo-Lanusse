@@ -1,7 +1,13 @@
 package edu.austral.ingsis.clifford.commands;
 
 import edu.austral.ingsis.clifford.elements.Directory;
+import edu.austral.ingsis.clifford.elements.FileSystemElements;
+import edu.austral.ingsis.clifford.result.CommandResult;
+import edu.austral.ingsis.clifford.result.Result;
+import edu.austral.ingsis.clifford.result.Success;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
+
+import java.util.List;
 
 public final class Mkdir implements Command {
 
@@ -15,10 +21,15 @@ public final class Mkdir implements Command {
   }
 
   @Override
-  public String execute(InMemoryFileSystem fileSystem) {
+  public Result<CommandResult> execute(InMemoryFileSystem fileSystem) {
     Directory currentDir = fileSystem.getCurrentDirectory();
-    Directory newDir = new Directory(dirName, currentDir);
-    currentDir.addChild(newDir);
-    return "'" + newDir.getName() + "'" + " directory created";
+    Directory newDir = new Directory(dirName, List.of());
+
+    Directory updatedCurrentDir = currentDir.addChildByName(newDir);
+    InMemoryFileSystem updatedFs = fileSystem.replaceDirectoryAtCurrentPath(updatedCurrentDir);
+
+    return new Success<>(
+            new CommandResult("'" + newDir.getName() + "' directory created", updatedFs)
+    );
   }
 }

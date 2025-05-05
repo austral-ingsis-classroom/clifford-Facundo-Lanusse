@@ -2,6 +2,9 @@ package edu.austral.ingsis.clifford.commands;
 
 import edu.austral.ingsis.clifford.elements.Directory;
 import edu.austral.ingsis.clifford.elements.FileSystemElements;
+import edu.austral.ingsis.clifford.result.CommandResult;
+import edu.austral.ingsis.clifford.result.Result;
+import edu.austral.ingsis.clifford.result.Success;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,14 +20,15 @@ public final class Ls implements Command {
   }
 
   @Override
-  public String execute(InMemoryFileSystem fileSystem) {
+  public Result<CommandResult> execute(InMemoryFileSystem fileSystem) {
     Directory current = fileSystem.getCurrentDirectory();
 
     List<FileSystemElements> children = current.getChildren();
 
     List<FileSystemElements> orderList = orderList(order, children);
 
-    return orderList.stream().map(FileSystemElements::getName).collect(Collectors.joining(" "));
+    return new Success<>(new CommandResult(orderList.stream().map(FileSystemElements::getName).collect(Collectors.joining(" ")),
+            fileSystem));
   }
 
   public List<FileSystemElements> orderList(String order, List<FileSystemElements> children) {

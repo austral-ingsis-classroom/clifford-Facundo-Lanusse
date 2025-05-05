@@ -1,7 +1,12 @@
 package edu.austral.ingsis.clifford.system;
 
-public interface FileSystem {
-  String run(String commandLine);
+import edu.austral.ingsis.clifford.result.CommandResult;
+import edu.austral.ingsis.clifford.result.Result;
 
-  String getCurrentPath();
+import java.util.List;
+
+public interface FileSystem {
+  Result<CommandResult> run(String commandLine);
+
+  List<String> getCurrentPath();
 }

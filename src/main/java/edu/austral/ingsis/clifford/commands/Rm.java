@@ -2,6 +2,10 @@ package edu.austral.ingsis.clifford.commands;
 
 import edu.austral.ingsis.clifford.elements.Directory;
 import edu.austral.ingsis.clifford.elements.FileSystemElements;
+import edu.austral.ingsis.clifford.result.CommandResult;
+import edu.austral.ingsis.clifford.result.Failure;
+import edu.austral.ingsis.clifford.result.Result;
+import edu.austral.ingsis.clifford.result.Success;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
 
 public final class Rm implements Command {
@@ -15,26 +19,21 @@ public final class Rm implements Command {
   }
 
   @Override
-  public String execute(InMemoryFileSystem fileSystem) {
-    Directory currentDir = fileSystem.getCurrentDirectory();
-    FileSystemElements removable = currentDir.getChild(target);
+  public Result<CommandResult> execute(InMemoryFileSystem fileSystem) {
+      Directory currentDir = fileSystem.getCurrentDirectory();
 
-    boolean targetExists = removable != null;
+      return currentDir.getChild(target).fold(
+              element -> {
+                  if (element.isDirectory() && !recursive) {
+                      return new Failure<>("cannot remove '" + element.getName() + "', is a directory");
+                  }
 
-    if (!targetExists) {
-      return "file does not exist";
-    }
-    // excepción si intento borrar un directorio sin el flag --recursive
-    if (!recursive && removable.isDirectory()) {
-      return "cannot remove '" + removable.getName() + "', is a directory";
-    }
-    if (recursive) {
-      FileSystemElements directory = currentDir.getChild(target);
-      currentDir.removeChild(directory);
-      return "'" + directory.getName() + "' removed";
-    }
-    FileSystemElements file = currentDir.getChild(target);
-    currentDir.removeChild(file);
-    return "'" + file.getName() + "' removed";
+                  Directory updatedDir = currentDir.removeChildByName(element);
+                  InMemoryFileSystem updatedFs = fileSystem.replaceDirectoryAtCurrentPath(updatedDir);
+
+                  return new Success<>(new CommandResult("'" + element.getName() + "' removed", updatedFs));
+              },
+              error -> new Failure<>("file does not exist")
+      );
   }
 }

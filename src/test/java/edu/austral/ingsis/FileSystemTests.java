@@ -128,6 +128,9 @@ public class FileSystemTests {
     executeTest(
         List.of(
             entry("mkdir emily", "'emily' directory created"),
-            entry("rm hola.txt", "file does not exist")));
+            entry("rm hola.txt", "file does not exist"),
+            entry("rm", "Mising target")
+        )
+    );
   }
 }

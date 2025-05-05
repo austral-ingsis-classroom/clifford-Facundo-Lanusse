@@ -2,6 +2,9 @@ package edu.austral.ingsis.clifford.commands;
 
 import edu.austral.ingsis.clifford.elements.Directory;
 import edu.austral.ingsis.clifford.elements.File;
+import edu.austral.ingsis.clifford.result.CommandResult;
+import edu.austral.ingsis.clifford.result.Result;
+import edu.austral.ingsis.clifford.result.Success;
 import edu.austral.ingsis.clifford.system.InMemoryFileSystem;
 
 public final class Touch implements Command {
@@ -16,10 +19,14 @@ public final class Touch implements Command {
   }
 
   @Override
-  public String execute(InMemoryFileSystem fileSystem) {
-    Directory parent = fileSystem.getCurrentDirectory();
-    File newFile = new File(fileName, parent);
-    parent.addChild(newFile);
-    return "'" + newFile.getName() + "'" + " file created";
-  }
+  public Result<CommandResult> execute(InMemoryFileSystem fileSystem) {
+    Directory currentDir = fileSystem.getCurrentDirectory();
+    File newFile = new File(fileName);
+
+    Directory updatedDir = currentDir.addChildByName(newFile);
+    InMemoryFileSystem updatedFs = fileSystem.replaceDirectoryAtCurrentPath(updatedDir);
+
+    return new Success<>(
+            new CommandResult("'" + newFile.getName() + "' file created", updatedFs)
+    );  }
 }
